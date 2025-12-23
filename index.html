@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Indicator Repair Shop – Peace Impact Framework</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --card-bg: #ffffff;
+      --border-subtle: #e5e7eb;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --success: #16a34a;
+      --success-soft: #ecfdf3;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 1.5rem;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .intro-box {
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.92rem;
+    }
+
+    .intro-box ul {
+      margin: 0.4rem 0 0.2rem;
+      padding-left: 1.2rem;
+      font-size: 0.9rem;
+    }
+
+    .intro-emoji {
+      font-size: 1.3rem;
+      margin-right: 0.35rem;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    button {
+      border: none;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+    }
+
+    .badge-emoji {
+      font-size: 1rem;
+    }
+
+    .progress {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .progress-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: var(--primary);
+      transition: width 0.25s ease;
+    }
+
+    .scenario-wrapper {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .scenario-wrapper {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .panel-title .emoji {
+      font-size: 1.1rem;
+    }
+
+    .panel-subtext {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .colleague-indicator {
+      border-radius: 10px;
+      background: #fef9c3;
+      border: 1px solid #facc15;
+      padding: 0.55rem 0.7rem;
+      margin-top: 0.35rem;
+      position: relative;
+      font-size: 0.9rem;
+    }
+
+    .colleague-indicator::before {
+      content: "Colleague's proposal";
+      position: absolute;
+      top: -0.7rem;
+      left: 0.6rem;
+      font-size: 0.72rem;
+      background: #fef9c3;
+      padding: 0 0.35rem;
+      border-radius: 999px;
+      border: 1px solid #facc15;
+      color: #92400e;
+    }
+
+    .pif-indicator-preview {
+      border-radius: 9px;
+      background: #eff6ff;
+      border: 1px dashed #bfdbfe;
+      padding: 0.45rem 0.6rem;
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      color: #1d4ed8;
+    }
+
+    .pif-indicator-preview strong {
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    .options-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .option-card {
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--card-bg);
+      padding: 0.55rem 0.6rem 0.55rem 0.7rem;
+      display: flex;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      position: relative;
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .option-card:hover {
+      border-color: #c7d2fe;
+      background: #eef2ff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+    }
+
+    .option-icon {
+      font-size: 1.1rem;
+      padding-top: 0.05rem;
+    }
+
+    .option-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+      color: var(--text-muted);
+    }
+
+    .option-text {
+      font-size: 0.88rem;
+    }
+
+    .option-card.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .option-card.incorrect {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .option-pill {
+      position: absolute;
+      top: 0.3rem;
+      right: 0.5rem;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      color: #4b5563;
+    }
+
+    .option-pill.correct-label {
+      border-color: #bbf7d0;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .option-pill.incorrect-label {
+      border-color: #fecaca;
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .feedback-box {
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.86rem;
+    }
+
+    .feedback-title {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .feedback-title .emoji {
+      font-size: 1rem;
+    }
+
+    .feedback-text {
+      font-size: 0.86rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .feedback-pif {
+      font-size: 0.8rem;
+      color: #1d4ed8;
+      border-left: 3px solid #bfdbfe;
+      padding-left: 0.45rem;
+      margin-top: 0.2rem;
+    }
+
+    .score-chip {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .summary-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .summary-score {
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .summary-list {
+      font-size: 0.9rem;
+      margin: 0.4rem 0 0.2rem;
+      padding-left: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Intro Screen -->
+    <section id="intro-screen">
+      <h1>Indicator Repair Shop</h1>
+      <p class="subtitle">
+        Practice keeping indicators aligned with the <strong>Peace Impact Framework</strong> while adapting them for real projects.
+      </p>
+
+      <div class="intro-box">
+        <div><span class="intro-emoji">🛠️</span><strong>Premise:</strong></div>
+        <p>
+          Your colleague has drafted some indicators for a peacebuilding project. They’re close, but in adapting them
+          to local contexts, they may have drifted away from the <strong>aligned PIF indicators</strong>.
+        </p>
+        <div><span class="intro-emoji">🎯</span><strong>Your task:</strong></div>
+        <ul>
+          <li>Read the <strong>colleague’s proposed indicator</strong>.</li>
+          <li>Choose the option that best <strong>“repairs”</strong> it so it stays aligned with the original PIF indicator.</li>
+          <li>Remember: you can adjust wording and add context, but you can’t change the <strong>core concept</strong>.</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.85rem;color:var(--text-muted);">
+          There are 10 scenarios, two for each Vital Sign of Peace. Try to spot what breaks comparability and what keeps it.
+        </p>
+      </div>
+
+      <div class="center">
+        <button class="primary" id="start-btn">Start the game</button>
+      </div>
+    </section>
+
+    <!-- Game Screen -->
+    <section id="game-screen" class="hidden">
+      <div class="top-row">
+        <div class="badge">
+          <span class="badge-emoji" id="vital-icon">🛡️</span>
+          <span id="vital-name">Physical Violence</span>
+        </div>
+        <div class="progress">
+          <div class="progress-label" id="progress-label">Scenario 1 of 10</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+        </div>
+        <div class="badge">
+          <span class="badge-emoji">⭐</span>
+          <span class="score-chip" id="score-chip">Score: 0 / 0</span>
+        </div>
+      </div>
+
+      <div class="scenario-wrapper">
+        <div class="panel">
+          <div class="panel-title">
+            <span class="emoji">👥</span>
+            <span>Your colleague’s indicator</span>
+          </div>
+          <div class="panel-subtext">
+            Read how your colleague adapted the aligned indicator for their project. What’s the issue?
+          </div>
+          <div class="colleague-indicator" id="colleague-text">
+            <!-- Filled by JS -->
+          </div>
+          <div class="pif-indicator-preview" id="pif-preview">
+            <strong>Goal (PIF aligned indicator):</strong>
+            <span id="pif-text"></span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">
+            <span class="emoji">🧩</span>
+            <span>Choose the best repair</span>
+          </div>
+          <div class="panel-subtext">
+            Which option keeps the <strong>same core concept</strong> as the PIF indicator, while allowing local adaptation?
+          </div>
+          <div class="options-wrapper" id="options-wrapper">
+            <!-- Options injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-row">
+        <div class="feedback-box" id="feedback-box" style="display:none;">
+          <div class="feedback-title" id="feedback-title">
+            <span class="emoji">💡</span>
+            <span>Feedback</span>
+          </div>
+          <div class="feedback-text" id="feedback-text"></div>
+          <div class="feedback-pif" id="feedback-pif"></div>
+        </div>
+
+        <div style="display:flex;gap:0.5rem;">
+          <button class="secondary" id="restart-btn">Restart</button>
+          <button class="primary" id="submit-btn" disabled>Submit answer</button>
+          <button class="primary hidden" id="next-btn">Next scenario</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary Screen -->
+    <section id="summary-screen" class="hidden">
+      <h2 class="summary-title">Indicator Repair Shop – Summary</h2>
+      <p class="summary-score" id="summary-score"></p>
+      <p style="font-size:0.9rem;">
+        Remember, aligned measures are powerful because they keep a <strong>shared core indicator</strong> across countries and projects,
+        while still allowing you to adapt language and add local sub-questions.
+      </p>
+      <ul class="summary-list">
+        <li><strong>Adaptable:</strong> wording, local examples, extra disaggregation, and follow-up questions.</li>
+        <li><strong>Shouldn’t change:</strong> the underlying concept, what is being measured, or how it’s fundamentally calculated.</li>
+      </ul>
+      <p style="font-size:0.9rem;margin-top:0.5rem;">
+        You can replay the game or use these scenarios in discussions about how your team adapts indicators in practice.
+      </p>
+      <button class="primary" id="play-again-btn">Play again</button>
+    </section>
+  </div>
+
+  <script>
+    const scenarios = [
+      // Physical Violence
+      {
+        id: "pv1",
+        vitalSign: "Physical Violence",
+        icon: "🛡️",
+        coworker:
+          "How often do you hear about crime on the radio or on WhatsApp?",
+        pifIndicator:
+          "% of the population that feels safe walking alone at night in their neighborhood.",
+        options: [
+          {
+            id: "a",
+            icon: "✅",
+            text:
+              "What percentage of people in your community feel safe walking alone at night in their neighborhood?",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "📉",
+            text:
+              "How many people in your community have been robbed this year?",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "🌍",
+            text: "Do you think crime is increasing in your country? (Yes/No)",
+            correct: false
+          }
+        ],
+        explanation:
+          "The aligned indicator is about people’s perceived safety walking alone at night in their local area. Option A keeps that concept while adjusting the wording slightly. Options B and C measure different constructs (actual incidents or national crime perception)."
+      },
+      {
+        id: "pv2",
+        vitalSign: "Physical Violence",
+        icon: "🛡️",
+        coworker:
+          "Number of conflict incidents reported in the district this year.",
+        pifIndicator:
+          "Number of conflict-related deaths per 100,000 population in a given period.",
+        options: [
+          {
+            id: "a",
+            icon: "📊",
+            text:
+              "Number of conflict-related deaths per 100,000 people in the district this year.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "📰",
+            text:
+              "Number of conflict incidents reported by the media this year.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "🚶",
+            text:
+              "Number of people who have relocated because of insecurity in the district.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The PIF indicator focuses specifically on deaths per 100,000 people, not incidents or displacement. Option A keeps that core construct while situating it at district level."
+      },
+      // Personal Agency
+      {
+        id: "pa1",
+        vitalSign: "Personal Agency",
+        icon: "💪",
+        coworker: "How many community meetings did you attend in the last month?",
+        pifIndicator:
+          "% of people who believe they can make a positive difference in their neighborhood.",
+        options: [
+          {
+            id: "a",
+            icon: "🗳️",
+            text:
+              "To what extent do you feel you can make a positive difference in your neighborhood? (1–5 scale)",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "📅",
+            text: "Do you know when community meetings are held?",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "🧾",
+            text: "Have you ever voted in a national election?",
+            correct: false
+          }
+        ],
+        explanation:
+          "The aligned indicator measures perceived ability to make a positive difference, not attendance or formal rights. Option A keeps the same construct (perceived influence) using a Likert scale."
+      },
+      {
+        id: "pa2",
+        vitalSign: "Personal Agency",
+        icon: "💪",
+        coworker:
+          "% of people who say they ‘care about their community.’",
+        pifIndicator:
+          "% of people who take action to influence the things they care about.",
+        options: [
+          {
+            id: "a",
+            icon: "🤝",
+            text:
+              "% of people who joined at least one community initiative in the last 6 months.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "🏘️",
+            text: "% of people who say they feel close to their neighbors.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "📣",
+            text:
+              "% of people who believe others should take action to improve the community.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The PIF indicator is about taking action, not just caring or feeling connected. Option A operationalizes action in a concrete way while preserving comparability."
+      },
+      // Polarization
+      {
+        id: "po1",
+        vitalSign: "Polarization / Social Cohesion",
+        icon: "🤝",
+        coworker:
+          "Do people from other groups respect your culture?",
+        pifIndicator:
+          "% of people who believe they are perceived as less than human because of their group membership.",
+        options: [
+          {
+            id: "a",
+            icon: "🧠",
+            text:
+              "% of respondents who believe others see people like them as less than human because of their group identity.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "🎭",
+            text:
+              "% who say people from other groups know little about their culture.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "🌈",
+            text: "% who feel proud of their cultural traditions.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The aligned indicator focuses on dehumanization—being seen as ‘less than human’ because of group identity. Option A keeps that core idea. Options B and C measure different aspects of intergroup relations."
+      },
+      {
+        id: "po2",
+        vitalSign: "Polarization / Social Cohesion",
+        icon: "🤝",
+        coworker:
+          "% who think violence is common in politics.",
+        pifIndicator:
+          "% of people willing to use violence to advance their group’s interests.",
+        options: [
+          {
+            id: "a",
+            icon: "⚔️",
+            text:
+              "% who say they personally would be willing to use violence to protect or advance their group’s interests.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "📺",
+            text:
+              "% who believe politicians often use violent language in their speeches.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "🕊️",
+            text: "% who think violence in general is bad.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The PIF indicator is about personal willingness to use violence for group interests, not just perception of violence in politics or general attitudes toward violence."
+      },
+      // Institutional Legitimacy
+      {
+        id: "il1",
+        vitalSign: "Institutional Legitimacy",
+        icon: "🏛️",
+        coworker: "Do you like your mayor?",
+        pifIndicator:
+          "% of people who believe decision-making is inclusive and responsive to their needs.",
+        options: [
+          {
+            id: "a",
+            icon: "🧑‍⚖️",
+            text:
+              "% who feel that people like them are included in and can influence local decision-making.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "🤝",
+            text: "% who have met the mayor personally.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "📱",
+            text:
+              "% who say local leaders are popular on social media.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The aligned indicator focuses on inclusive and responsive decision-making, not personal popularity or access. Option A captures perceived inclusion and influence."
+      },
+      {
+        id: "il2",
+        vitalSign: "Institutional Legitimacy",
+        icon: "🏛️",
+        coworker:
+          "% who received a service from authorities this year.",
+        pifIndicator:
+          "% of people satisfied with the services they receive when they seek help from authorities.",
+        options: [
+          {
+            id: "a",
+            icon: "📋",
+            text:
+              "% who are satisfied with the services they received from authorities (e.g., police, courts, administration).",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "🏢",
+            text: "% who visited any public office this year.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "💸",
+            text: "% who think public services should be free.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The PIF indicator is about satisfaction with services received, not simply usage or opinions about how services should be funded. Option A stays aligned with that construct."
+      },
+      // Resource Investment in Peace
+      {
+        id: "ri1",
+        vitalSign: "Resource Investment in Peace",
+        icon: "🌱",
+        coworker:
+          "Number of people who say peace is important to them.",
+        pifIndicator:
+          "Monetary value of time and resources invested into identified priorities to support peace.",
+        options: [
+          {
+            id: "a",
+            icon: "💰",
+            text:
+              "Estimated total value (money + volunteer time) invested in agreed community peace priorities over the past 12 months.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "📅",
+            text: "Number of peace meetings organized by NGOs.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "📻",
+            text: "% of people who heard about peace on the radio.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The aligned indicator captures the value of resources and time invested in peace priorities. Option A maintains that focus while allowing local estimation methods."
+      },
+      {
+        id: "ri2",
+        vitalSign: "Resource Investment in Peace",
+        icon: "🌱",
+        coworker:
+          "Number of local shops that sell machetes.",
+        pifIndicator:
+          "Imports and exports of arms, using SIPRI or equivalent national data.",
+        options: [
+          {
+            id: "a",
+            icon: "📦",
+            text:
+              "Imports and exports of arms, using SIPRI or equivalent national data.",
+            correct: true
+          },
+          {
+            id: "b",
+            icon: "💬",
+            text: "Number of social media posts that mention weapons.",
+            correct: false
+          },
+          {
+            id: "c",
+            icon: "🏠",
+            text: "Number of people who own any type of weapon.",
+            correct: false
+          }
+        ],
+        explanation:
+          "The PIF indicator specifically uses standardized data on arms imports and exports (e.g., SIPRI). Option A preserves this, while B and C measure different, non-comparable things."
+      }
+    ];
+
+    const introScreen = document.getElementById("intro-screen");
+    const gameScreen = document.getElementById("game-screen");
+    const summaryScreen = document.getElementById("summary-screen");
+
+    const startBtn = document.getElementById("start-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const playAgainBtn = document.getElementById("play-again-btn");
+    const submitBtn = document.getElementById("submit-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    const vitalIconEl = document.getElementById("vital-icon");
+    const vitalNameEl = document.getElementById("vital-name");
+    const progressLabelEl = document.getElementById("progress-label");
+    const progressFillEl = document.getElementById("progress-fill");
+    const scoreChipEl = document.getElementById("score-chip");
+
+    const colleagueTextEl = document.getElementById("colleague-text");
+    const pifTextEl = document.getElementById("pif-text");
+    const optionsWrapperEl = document.getElementById("options-wrapper");
+
+    const feedbackBoxEl = document.getElementById("feedback-box");
+    const feedbackTextEl = document.getElementById("feedback-text");
+    const feedbackPifEl = document.getElementById("feedback-pif");
+    const feedbackTitleEl = document.getElementById("feedback-title");
+    const summaryScoreEl = document.getElementById("summary-score");
+
+    let currentIndex = 0;
+    let selectedOptionId = null;
+    let score = 0;
+    let answeredCount = 0;
+    let hasSubmittedCurrent = false;
+
+    function shuffle(array) {
+      return array
+        .map((item) => ({ item, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ item }) => item);
+    }
+
+    function initializeGame() {
+      currentIndex = 0;
+      selectedOptionId = null;
+      score = 0;
+      answeredCount = 0;
+      hasSubmittedCurrent = false;
+
+      // Randomize scenarios if you want variety between plays:
+      // scenarios = shuffle(scenarios); // If you want reshuffle, convert scenarios to let instead of const.
+
+      introScreen.classList.add("hidden");
+      summaryScreen.classList.add("hidden");
+      gameScreen.classList.remove("hidden");
+      loadScenario();
+      updateScoreChip();
+    }
+
+    function loadScenario() {
+      const scenario = scenarios[currentIndex];
+      hasSubmittedCurrent = false;
+      selectedOptionId = null;
+      submitBtn.disabled = true;
+      nextBtn.classList.add("hidden");
+      feedbackBoxEl.style.display = "none";
+
+      // Header info
+      vitalIconEl.textContent = scenario.icon;
+      vitalNameEl.textContent = scenario.vitalSign;
+      progressLabelEl.textContent = `Scenario ${currentIndex + 1} of ${scenarios.length}`;
+      const progressPercent = ((currentIndex) / scenarios.length) * 100;
+      progressFillEl.style.width = `${progressPercent}%`;
+
+      // Scenario text
+      colleagueTextEl.textContent = scenario.coworker;
+      pifTextEl.textContent = scenario.pifIndicator;
+
+      // Options
+      optionsWrapperEl.innerHTML = "";
+      scenario.options.forEach((opt, idx) => {
+        const card = document.createElement("div");
+        card.className = "option-card";
+        card.dataset.optionId = opt.id;
+
+        const icon = document.createElement("div");
+        icon.className = "option-icon";
+        icon.textContent = opt.icon;
+
+        const content = document.createElement("div");
+        const label = document.createElement("div");
+        label.className = "option-label";
+        label.textContent = `Option ${String.fromCharCode(65 + idx)}`;
+
+        const text = document.createElement("div");
+        text.className = "option-text";
+        text.textContent = opt.text;
+
+        content.appendChild(label);
+        content.appendChild(text);
+
+        card.appendChild(icon);
+        card.appendChild(content);
+
+        card.addEventListener("click", () => handleOptionSelect(opt.id));
+
+        optionsWrapperEl.appendChild(card);
+      });
+    }
+
+    function handleOptionSelect(optionId) {
+      if (hasSubmittedCurrent) return;
+      selectedOptionId = optionId;
+      submitBtn.disabled = false;
+      // Highlight selected card
+      document.querySelectorAll(".option-card").forEach((card) => {
+        if (card.dataset.optionId === optionId) {
+          card.classList.add("selected");
+        } else {
+          card.classList.remove("selected");
+        }
+      });
+    }
+
+    function updateScoreChip() {
+      scoreChipEl.textContent = `Score: ${score} / ${answeredCount}`;
+    }
+
+    function submitAnswer() {
+      if (!selectedOptionId) return;
+      const scenario = scenarios[currentIndex];
+      const correctOption = scenario.options.find((o) => o.correct);
+      const isCorrect = selectedOptionId === correctOption.id;
+
+      hasSubmittedCurrent = true;
+      answeredCount += 1;
+      if (isCorrect) score += 1;
+      updateScoreChip();
+
+      // Visual feedback on options
+      document.querySelectorAll(".option-card").forEach((card) => {
+        const optId = card.dataset.optionId;
+        const optData = scenario.options.find((o) => o.id === optId);
+
+        // Remove selection highlight now; we’ll use correct/incorrect classes
+        card.classList.remove("selected");
+
+        // Pill
+        let pill = card.querySelector(".option-pill");
+        if (!pill) {
+          pill = document.createElement("div");
+          pill.className = "option-pill";
+          card.appendChild(pill);
+        }
+
+        if (optData.correct) {
+          card.classList.add("correct");
+          card.classList.remove("incorrect");
+          pill.textContent = "Aligned";
+          pill.classList.add("correct-label");
+          pill.classList.remove("incorrect-label");
+        } else if (optId === selectedOptionId) {
+          card.classList.add("incorrect");
+          card.classList.remove("correct");
+          pill.textContent = "Breaks comparability";
+          pill.classList.add("incorrect-label");
+          pill.classList.remove("correct-label");
+        } else {
+          // Non-selected, non-correct options: keep neutral but show label
+          card.classList.remove("correct", "incorrect");
+          pill.textContent = "Not selected";
+          pill.classList.remove("correct-label", "incorrect-label");
+        }
+      });
+
+      // Feedback text
+      feedbackBoxEl.style.display = "block";
+      feedbackTitleEl.innerHTML = isCorrect
+        ? '<span class="emoji">✅</span><span>Nice repair!</span>'
+        : '<span class="emoji">🔍</span><span>Here’s one aligned option</span>';
+
+      feedbackTextEl.textContent = scenario.explanation;
+      feedbackPifEl.textContent = `PIF aligned indicator: ${scenario.pifIndicator}`;
+
+      submitBtn.disabled = true;
+
+      if (currentIndex < scenarios.length - 1) {
+        nextBtn.textContent = "Next scenario";
+        nextBtn.classList.remove("hidden");
+      } else {
+        nextBtn.textContent = "See summary";
+        nextBtn.classList.remove("hidden");
+      }
+    }
+
+    function goToNext() {
+      if (currentIndex < scenarios.length - 1) {
+        currentIndex += 1;
+        loadScenario();
+      } else {
+        showSummary();
+      }
+    }
+
+    function showSummary() {
+      gameScreen.classList.add("hidden");
+      summaryScreen.classList.remove("hidden");
+      const total = scenarios.length;
+      summaryScoreEl.textContent = `You repaired ${score} out of ${total} indicators correctly.`;
+    }
+
+    // Event listeners
+    startBtn.addEventListener("click", initializeGame);
+    restartBtn.addEventListener("click", initializeGame);
+    playAgainBtn.addEventListener("click", initializeGame);
+    submitBtn.addEventListener("click", submitAnswer);
+    nextBtn.addEventListener("click", goToNext);
+  </script>
+</body>
+</html>
